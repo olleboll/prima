@@ -40,10 +40,9 @@
 <div id="wrapper">
   <div id="blocklyDiv" style="width: 35%; height: 480px;"></div>
   <div id="Text" style="width: 15%; height: 480px;">
-  <textarea id ="code" placeholder="Skriv javascript kod här!
-Tryck på kör kod för att köra--->"></textarea>
+  <textarea id ="code" placeholder="Här kommer ditt projekt i javascript!"></textarea>
   </div>
-  <button id = "Run" onclick="runWrittenCode()">Kör kod!</button>
+  <!--<button id = "Run" onclick="runWrittenCode()">Kör kod!</button>-->
 	<div id="Canvas" style="width: 800px; height: 480px;"></div>
   
 </div>
@@ -188,7 +187,7 @@ document.getElementById('mysettings').innerHTML = "Logga in för att se dina ver
 var canvasWidth = 750;
 var canvasHeight = 480;
 var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera( 80, canvasWidth/canvasHeight, 0.1, 2000 );
+var camera = new THREE.PerspectiveCamera( 80, canvasWidth/canvasHeight, 0.1, 5000 );
 
 var scale = 50;
 var renderer = new THREE.WebGLRenderer();

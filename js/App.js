@@ -1,12 +1,14 @@
 // Dessa första två ska alltid köras och fylla upp en lista med exempel som alla användare kan komma åt!
 
-function getDefaultData(user){
+// GÖR OM SÅ DET UTFÖRS MED CALLBACKS (a la getDefaultData(user, callback); ). ALLDELES FÖR MÅNGA FUNKTIONER NU!
+
+function getExampleIds(user, callback){
 	var posting = $.post("php/getData.php", {
-		default_user: user
+		user: user
 	});
 
 	posting.done(function(data){
-		setupExamples(data);
+		callback(data);
 	});
 
 	posting.fail(function(){
@@ -14,14 +16,13 @@ function getDefaultData(user){
 	});
 }
 
-
-function getDefaultExample(id){
+function getExample(id, callback){
 	var posting = $.post("php/getData.php", {
 		id_examples: id
 	});
 
 	posting.done(function(data){
-		defineExamples(data);
+		callback(data);
 	});
 
 	posting.fail(function(){
@@ -43,13 +44,15 @@ function getAllOpenExamples(){
 	});
 }
 
-function getOpenExample(id){
+function getSettingIds(user, callback){
 	var posting = $.post("php/getData.php", {
-		id_Allexamples: id
+		id_userS: user
 	});
 
 	posting.done(function(data){
-		defineOpenExamples(data);
+		console.log(data + ", "+ callback);
+		callback(data);
+		//setupUserSettings(data);
 	});
 
 	posting.fail(function(){
@@ -71,14 +74,14 @@ function getDefaultSettings(id){
 	});
 }
 
-function getUserSettings(user){
+function getUserSettingsID(user, callback){
 	var posting = $.post("php/getData.php", {
 		id_userS: user
 	});
 
 	posting.done(function(data){
-		console.log(data);
-		setupUserSettings(data);
+		//console.log(data);
+		callback(data);
 	});
 
 	posting.fail(function(){
@@ -87,13 +90,14 @@ function getUserSettings(user){
 }
 
 // Kan vara sårbar för injections
-function getUserSetting(id){
+function getUserSetting(id,callback){
 	var posting = $.post("php/getData.php", {
 		id_TB: id
 	});
 
 	posting.done(function(data){
-		defineUserSettings(data);
+		callback(data);
+		//defineUserSettings(data);
 	});
 
 	posting.fail(function(){
@@ -111,13 +115,13 @@ function login(inputs){
 		if(data == "FAIL!"){
 			alert("Fel namn eller lösenord");
 		}else{
-			console.log(JSON.parse(data));
+			//console.log(JSON.parse(data));
 			setUserID(data);
 			document.getElementById("myexamples").innerHTML = "INLOGGAD <br> Exempel <br>";
 			document.getElementById("mysettings").innerHTML = "Verktygslådor <br>";
 			setUpInterface();
-			getUserExamples(JSON.parse(data));
-			getUserSettings(JSON.parse(data));
+			getExampleIds(JSON.parse(data),setupUserExamples);
+			getUserSettingsID(JSON.parse(data), setupUserSettings);
 		}
 
 	});
@@ -134,35 +138,6 @@ function register(inputs){
 
 	posting.done(function(data){
 		alert(data);
-	});
-
-	posting.fail(function(){
-		alert("fail");
-	});
-}
-
-function getUserExamples(user){
-	var posting = $.post("php/getData.php", {
-		id_user: user
-	});
-
-	posting.done(function(data){
-		setupUserExamples(data);
-	});
-
-	posting.fail(function(){
-		alert("fail");
-	});
-}
-
-function getUserExample(id){
-	var posting = $.post("php/getData.php", {
-		id_examples: id
-	});
-
-	posting.done(function(data){
-			//console.log(data);
-			defineUserExamples(data);
 	});
 
 	posting.fail(function(){
@@ -237,7 +212,7 @@ $(document).ready(function(){
 		
     });
     
-	getDefaultData("1");
+	getExampleIds("1", setupExamples);
 	getDefaultSettings('1');
 	getAllOpenExamples();
 });

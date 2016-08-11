@@ -323,10 +323,10 @@ function Shape(size, type, scale){
     var dist = scale / 2;
     switch(dir) {
     case "up":
-        cord = [dist,y,z];
+        cord = [-dist,y,z];
         break;
     case "down":
-        cord = [-dist,y,z];
+        cord = [dist,y,z];
         break;
     case "right":
         cord = [x,dist,z];

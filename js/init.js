@@ -40,7 +40,7 @@ function init(){
   var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
   directionalLight.position.set( 0, -5, 25);
   scene.add( directionalLight );
-  renderer.setClearColor( 0x3f3f3f );
+  renderer.setClearColor( 0x5a5a5a );
 
   controls = new THREE.TrackballControls( camera , renderer.domElement);
   controls.rotateSpeed = 1.0;
@@ -122,7 +122,7 @@ function setUpInterface(){
     document.getElementById("myexamples").innerHTML = "INLOGGAD";
     document.getElementById("myexamples").insertAdjacentHTML('beforeend', '<br>');
     setUpInterface();
-    getUserExamples(userID);
+    getExampleIds(userID, setupUserExamples);
     };
   btn3.appendChild(t3);
   document.getElementById("myexamples").appendChild(btn3);
@@ -180,7 +180,7 @@ function setupUserSettings(data){
     document.getElementById("mysettings").appendChild(t);
   }else{
     for(var i = 0; i < settings.length; i++){
-      getUserSetting(settings[i]);
+      getUserSetting(settings[i], defineUserSettings);
     }
   }
 }
@@ -225,7 +225,7 @@ function defineUserSettings(data){
   btn.appendChild(t);
   document.getElementById("mysettings").appendChild(btn);
   
-  console.log("Button made");
+  //console.log("Button made");
 
 }
 

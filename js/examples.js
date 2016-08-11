@@ -134,7 +134,7 @@ function setupExamples(data){
 	var ids = JSON.parse(data);
 	var number = ids.length;
 	for(var i = 0; i < number; i++){
-		getDefaultExample(ids[i]);
+		getExample(ids[i], defineExamples);
 	}
 }
 
@@ -142,7 +142,7 @@ function setUpAllOpenExamples(data){
 	var ids = JSON.parse(data);
 	var number = ids.length;
 	for(var i = 0; i < number; i++){
-		getOpenExample(ids[i]);
+		getExample(ids[i], defineOpenExamples);
 	}
 }
 var AllExamples = [];
@@ -192,7 +192,7 @@ function setupUserExamples(data){
 		
 		progress = 0;
 		for(var i = 0; i < exampleIDs.length; i++){
-			getUserExample(exampleIDs[i]);
+			getExample(exampleIDs[i], defineUserExamples);
 		}
 	}
 }
@@ -218,7 +218,7 @@ function defineUserExamples(data){
 	btn.appendChild(t);
 	document.getElementById("myexamples").appendChild(btn);
 	document.getElementById("myexamples").insertAdjacentHTML('beforeend', '<br>');
-	console.log("Button made");
+	//console.log("Button made");
 
 }
 var currentExampleId;

@@ -3,8 +3,8 @@
 //getToolbox('1');
 //getExample(3);
 // GETTIng DEFAULT EXAMPLES AT START
-if (isset($_POST['default_user'])){
-	getExampleData($_POST['default_user']);
+if (isset($_POST['user'])){
+	getExampleData($_POST['user']);
 }
 
 if (isset($_POST['id_examples'])){
@@ -34,10 +34,7 @@ if (isset($_POST['login_name'], $_POST['password'])){
 if (isset($_POST['reg_name'], $_POST['skola'], $_POST['password'])){
 	register($_POST['reg_name'], $_POST['skola'], $_POST['password']);
 }
-// GETTING USER EXAMPLES
-if (isset($_POST['id_user'])){
-	getUserExampleData($_POST['id_user']);
-}
+
 // GET ID OF ALL OPEN EXAMPLES
 if (isset($_POST['examples'])){
 	getOpenExample($_POST['examples']);
@@ -64,8 +61,14 @@ function connectToDB(){
 	return $mysqliLink;
 }
 //getExampleData('1');
-function getExampleData($userid){
+function getExampleData($userid2){
 	$mysqliLink = connectToDB();
+	if($_COOKIE['TestCookie'] && $userid2 != '1'){
+		$userid = $_COOKIE['TestCookie'];
+	}else{
+		$userid = $userid2;
+	}
+	
 	$query = "SELECT id_examples FROM examples WHERE id_user = ?";
 	$stmt = mysqli_prepare($mysqliLink, $query);
 	mysqli_stmt_bind_param($stmt, "s", $userid);
@@ -83,20 +86,6 @@ function getExampleData($userid){
 	mysqli_stmt_close($stmt);
 }
 
-function getUserExampleData($userid2){
-	$mysqliLink = connectToDB();
-	$userid = $_COOKIE['TestCookie'];
-	$query = mysqli_query($mysqliLink ,"SELECT * FROM examples WHERE id_user = '$userid'");
-	$examples = array();
-	$index = 0;
-	while($row = mysqli_fetch_assoc($query)){
-		$examples[$index] = $row['id_examples'];
-		$index++;
-	}
-	$json = json_encode($examples);
-	echo $json;
-}
-
 function getExample($exampleid){
 	$mysqliLink = connectToDB();
 	$query = mysqli_query($mysqliLink ,"SELECT * FROM examples WHERE id_examples = '$exampleid'");
@@ -106,6 +95,12 @@ function getExample($exampleid){
 		$example[1] = $row[3];
 		$example[2] = $row[0];
 	}
+	$query = mysqli_query($mysqliLink ,"SELECT id_user FROM examples WHERE id_examples = '$exampleid'");
+	$iduserRow = mysqli_fetch_row($query);
+	$iduser = $iduserRow[0];
+	$query = mysqli_query($mysqliLink ,"SELECT name FROM users WHERE id_user = '$iduser'");
+	$name = mysqli_fetch_row($query);
+	$example[3] = $name[0];
 	$json = json_encode($example);
 	echo $json;
 }
@@ -120,27 +115,6 @@ function getOpenExample($val){
 		$index++;
 	}
 	$json = json_encode($examples);
-	echo $json;
-}
-
-
-function getOpenExampleData($exampleid){
-	$mysqliLink = connectToDB();
-	$query = mysqli_query($mysqliLink ,"SELECT * FROM examples WHERE id_examples = '$exampleid'");
-	$example = array();
-	if($row = mysqli_fetch_row($query)){
-		$example[0] = $row[1];
-		$example[1] = $row[3];
-		$example[2] = $row[0];
-	}
-
-	$query = mysqli_query($mysqliLink ,"SELECT id_user FROM examples WHERE id_examples = '$exampleid'");
-	$iduserRow = mysqli_fetch_row($query);
-	$iduser = $iduserRow[0];
-	$query = mysqli_query($mysqliLink ,"SELECT name FROM users WHERE id_user = '$iduser'");
-	$name = mysqli_fetch_row($query);
-	$example[3] = $name[0];
-	$json = json_encode($example);
 	echo $json;
 }
 

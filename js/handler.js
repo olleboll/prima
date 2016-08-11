@@ -38,7 +38,6 @@ function doInfinite(flag){
 
 function createCube(r){
   var c = new Shape(r,"cube",scale)
-  console.log(r);
   objects.push(c);
   return c;
 }
